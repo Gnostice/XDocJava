@@ -5,7 +5,7 @@ XtremeDocumentStudio can process PDF and DOCX without requiring external softwar
 # Demos
 Demos folder contains demo eclipse projects which can be imported into eclipse workspace to work with XtremeDocumentStudio for Java. You can download [XtremeDocumentStudio for Java](http://www.gnostice.com/XtremeDocumentStudio_Java.asp?show=downloads) and add all .jar files in bin directory of the downloaded .zip file to the class-path/build-path of the demo eclipse projects to execute them.
 # Articles
-We publish technical [articles related to XtremeDocumentStudio for Java](http://www.gnostice.com/XtremeDocumentStudio_Java.asp?show=resources) on Gnostice website.
+We publish technical [articles](http://www.gnostice.com/XtremeDocumentStudio_Java.asp?show=resources) related to XtremeDocumentStudio for Java on Gnostice website.
 ## Here are some interesting articles:
 
 [Getting Started with XtremeDocumentStudio (for Java)'s multi-format DocumentViewer component](http://www.gnostice.com/nl_article.asp?id=297&t=Getting_Started_with_XtremeDocumentStudio_for_Javas_multi_format_DocumentViewer_component)
