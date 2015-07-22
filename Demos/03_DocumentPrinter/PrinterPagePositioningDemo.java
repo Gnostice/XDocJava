@@ -2,12 +2,12 @@ import java.awt.print.PrinterException;
 import java.io.IOException;
 
 import com.gnostice.core.XDocException;
+import com.gnostice.core.enums.PaperSize;
 import com.gnostice.documents.FormatNotSupportedException;
 import com.gnostice.documents.IncorrectPasswordException;
 import com.gnostice.documents.PageAlignment;
 import com.gnostice.documents.controls.swing.printer.DocumentPrinter;
 import com.gnostice.documents.enums.Horizontal;
-import com.gnostice.documents.enums.PaperSize;
 import com.gnostice.documents.enums.Vertical;
 
 
