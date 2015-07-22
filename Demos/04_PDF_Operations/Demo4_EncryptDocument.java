@@ -7,7 +7,7 @@ import com.gnostice.documents.FormatNotSupportedException;
 import com.gnostice.documents.IncorrectPasswordException;
 import com.gnostice.documents.pdf.PDF;
 import com.gnostice.documents.pdf.PDFEncryptionLevel;
-import com.gnostice.documents.pdf.PdfEncryption;
+import com.gnostice.documents.pdf.PDFEncryption;
 import com.gnostice.xtremedocumentstudio.Framework;
 
 public class Demo4_EncryptDocument
@@ -36,7 +36,7 @@ public class Demo4_EncryptDocument
         pdfDoc.loadDocument(inputFileName , "");
         
         // Get the Encryption object from the document
-        PdfEncryption encryptor = pdfDoc.getEncryptor();
+        PDFEncryption encryptor = pdfDoc.getEncryptor();
         // Set document open password
         encryptor.setUserPwd("open");
         
@@ -50,7 +50,7 @@ public class Demo4_EncryptDocument
         // Here user is allowed to perform only High Resolution
         // Printing, other operations cannot be performed by the users
         // without the permissions password.
-        encryptor.setPermissions(PdfEncryption.AllowHighResPrint);
+        encryptor.setPermissions(PDFEncryption.AllowHighResPrint);
         
         // Apply the encryption settings to the document
         pdfDoc.setEncryptor(encryptor);;

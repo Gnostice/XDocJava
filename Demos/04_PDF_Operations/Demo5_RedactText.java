@@ -23,10 +23,10 @@ import com.gnostice.documents.pdf.FontSizingMode;
 import com.gnostice.documents.pdf.IncludeAdditionalItems;
 import com.gnostice.documents.pdf.PDF;
 import com.gnostice.documents.pdf.RedactSettings;
-import com.gnostice.documents.pdf.encodings.PdfEncodings;
-import com.gnostice.documents.pdf.fonts.PdfFont;
-import com.gnostice.documents.pdf.graphics.PdfBrush;
-import com.gnostice.documents.pdf.graphics.PdfPen;
+import com.gnostice.documents.pdf.encodings.PDFEncodings;
+import com.gnostice.documents.pdf.fonts.PDFFont;
+import com.gnostice.documents.pdf.graphics.PDFBrush;
+import com.gnostice.documents.pdf.graphics.PDFPen;
 import com.gnostice.xtremedocumentstudio.Framework;
 
 public class Demo5_RedactText 
@@ -111,11 +111,11 @@ public class Demo5_RedactText
         
         // Specify outline color to stroke the redacted text boundary.
         // No outlining when pen is null.
-        PdfPen pen = new PdfPen(Color.RED);
+        PDFPen pen = new PDFPen(Color.RED);
         
         // Specify fill color to fill the redacted text boundary
         // No Filling when brush is null
-        PdfBrush brush = new PdfBrush(Color.YELLOW);
+        PDFBrush brush = new PDFBrush(Color.YELLOW);
         
         // Specify the string that should be written at the place of
         // redacted text.
@@ -123,9 +123,9 @@ public class Demo5_RedactText
         
         // Specify the font with which the replaceString should be
         // written.
-        PdfFont font = PdfFont.create(
+        PDFFont font = PDFFont.create(
             "C:\\FontsCollection\\ARIALUNI.TTF", 10,
-            PdfEncodings.CP1252);
+            PDFEncodings.CP1252);
         
         // Specify the color with which the replaceText should be
         // written.
