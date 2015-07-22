@@ -346,7 +346,7 @@ class DocumentInfoDialog extends JDialog
             lblFileSize.setText("");
         }*/
         
-        lblNumOfPages.setText(String.valueOf(d.getPageCount()));
+        lblNumOfPages.setText(String.valueOf(d.getCurrentPageCount().getPageCount()));
         lblSecurity.setText(documentInfo.isEncrypted()? "Yes" : "No");
     }
 }

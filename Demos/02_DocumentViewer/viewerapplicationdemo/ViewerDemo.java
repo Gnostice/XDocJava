@@ -2263,7 +2263,7 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
         docPath = fileToBeLoaded.getAbsolutePath();
         recentDir = fileToBeLoaded.getParentFile();
-        setTitle("Gnostice XStremeDocumentStudio");
+        setTitle("Gnostice XtremeDocumentStudio");
 
         // Show the Progress
         startProgressBar();
@@ -2695,7 +2695,7 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
     @Override
     public void viewerStateChanged(ViewerStateChangeEvent viewerChangeEvent)
     {
-        int pageNum = viewerChangeEvent.getCurrentPageNumber();
+        final int pageNum = viewerChangeEvent.getCurrentPageNumber();
         int pageColumnsCustomCount = viewerChangeEvent
             .getPageLayout().getColumns();
         double zoomPercentage = viewerChangeEvent.getZoom()
@@ -2704,16 +2704,21 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
             .getZoomMode();
         PageLayoutMode pageLayoutMode = viewerChangeEvent
             .getPageLayout().getPageLayoutMode();
-
-        if (pageNum == 0)
-        {
-            txtGoToPage.setText("");
-        }
-        else
-        {
-            txtGoToPage.setText(String.valueOf(pageNum) + " of "
-                + String.valueOf(viewer.getPageCount()));
-        }
+        
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		if (pageNum == 0)
+        		{
+        			txtGoToPage.setText("");
+        		}
+        		else
+        		{
+        			txtGoToPage.setText(String.valueOf(pageNum) + " of " + String.valueOf(viewer.getPageCount()));
+        		}
+        	}
+        });
+        
 
         txtCustomColumnCount.setText(String
             .valueOf(pageColumnsCustomCount));

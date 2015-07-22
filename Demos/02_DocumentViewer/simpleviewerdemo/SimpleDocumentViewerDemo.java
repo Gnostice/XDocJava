@@ -32,7 +32,7 @@ import com.gnostice.documents.controls.swing.viewer.ViewerRenderErrorEvent;
 import com.gnostice.documents.controls.swing.viewer.ViewerRotationChangeEvent;
 import com.gnostice.documents.controls.swing.viewer.ViewerStateChangeEvent;
 import com.gnostice.documents.controls.swing.viewer.ViewerZoomChangeEvent;
-import com.gnostice.documents.pdf.PdfException;
+import com.gnostice.documents.pdf.PDFException;
 
 public final class SimpleDocumentViewerDemo extends JFrame implements
     ActionListener, DocumentViewerListener
@@ -343,7 +343,7 @@ public final class SimpleDocumentViewerDemo extends JFrame implements
     }
 
     // Print the displayed document
-    protected void printFile() throws IOException, PdfException
+    protected void printFile() throws IOException, PDFException
     {
         if (viewer.isDocumentLoaded())
         {
