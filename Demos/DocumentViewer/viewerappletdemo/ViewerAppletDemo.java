@@ -18,6 +18,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -41,14 +42,13 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
@@ -2153,6 +2153,14 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
             mnuCloseItem.setEnabled(true);
             mnuDocInfo.setEnabled(true);
         }
+        catch (IncorrectPasswordException pwdEx)
+        {
+            // In the demo we don't throw the exception as the
+            // password will be asked repeatedly until the correct
+            // password is provided or user can cancel the loading.
+//            JOptionPane.showMessageDialog(this, pwdEx.getMessage(),
+//                "Gnostice XDoc Viewer", JOptionPane.ERROR_MESSAGE);
+        }
         catch (XDocException xDocEx)
         {
             JOptionPane.showMessageDialog(this, xDocEx.getMessage(),
@@ -2337,7 +2345,7 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
         requestFocus();
 
-        aboutDialog = new AboutGnosticeXDOCJava();
+        aboutDialog = new AboutGnosticeXDOCJava(null);
         aboutDialog.setModal(true);
 
         docInfoDialog = new DocumentInfoDialog();
@@ -2878,29 +2886,67 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
     public void needPassword(
         ViewerNeedPasswordEvent needPasswordEvent)
     {
-        JPanel panel = new JPanel(new FlowLayout());
-
-        JPasswordField field = new JPasswordField(10);
-        panel.add(new JLabel("Password: "));
-        panel.add(field);
-
-        field.requestFocus();
-
-        JOptionPane.showMessageDialog(this, panel,
-            "Gnostice Document Viewer", JOptionPane.OK_OPTION
-            | JOptionPane.QUESTION_MESSAGE);
-
-        char[] pin = field.getPassword();
-        try
-        {
-            pwd = new String(pin);
-        }
-        finally
-        {
-            Arrays.fill(pin, ' ');
-            field.setText("");
-        }
-        needPasswordEvent.setPassword(pwd);
+         // old working one but not usable.
+    //      JPanel panel = new JPanel(new FlowLayout());
+    //
+    //      JPasswordField field = new JPasswordField(10);
+    //      panel.add(new JLabel("Password: "));
+    //      panel.add(field);
+    //
+    //      field.requestFocus();
+    //
+    //      JOptionPane.showMessageDialog(this, panel,
+    //          "Gnostice Document Viewer", JOptionPane.OK_OPTION
+    //          | JOptionPane.QUESTION_MESSAGE);
+    //
+    //      char[] pin = field.getPassword();
+    //      try
+    //      {
+    //          pwd = new String(pin);
+    //      }
+    //      finally
+    //      {
+    //          Arrays.fill(pin, ' ');
+    //          field.setText("");
+    //      }
+    //      needPasswordEvent.setPassword(pwd);
+          
+          // prompts the dialog box repeatedly until the correct
+          // password is provided or user can cancel the loading.
+          final PasswordPanel passwordPanel = new PasswordPanel();
+          JOptionPane optionPane = new JOptionPane(passwordPanel, JOptionPane.OK_CANCEL_OPTION,
+                  JOptionPane.WARNING_MESSAGE);
+    
+          JDialog dialog = optionPane.createDialog(this, "Password");
+    
+          // Wire up FocusListener to ensure JPasswordField is able to
+          // request focus when the dialog is first shown.
+          dialog.addWindowFocusListener(new WindowAdapter()
+          {
+              @Override
+              public void windowGainedFocus(WindowEvent e)
+              {
+                  passwordPanel.gainedFocus();
+                  passwordPanel.passwordField.requestFocus();
+                  passwordPanel.passwordField.requestFocusInWindow();
+              }
+          });
+          
+          dialog.setVisible(true);
+    
+          if (optionPane.getValue() != null
+              && optionPane.getValue().equals(JOptionPane.OK_OPTION))
+          {
+              String password = new String(passwordPanel.getPassword());
+    //          System.err.println("You entered: " + password);
+              pwd = password;
+              needPasswordEvent.setPassword(pwd);
+              needPasswordEvent.setCallAgainIfUnsuccessful(true);
+          }
+          else
+          {
+              needPasswordEvent.setCallAgainIfUnsuccessful(false);
+          }
     }
 
     @Override

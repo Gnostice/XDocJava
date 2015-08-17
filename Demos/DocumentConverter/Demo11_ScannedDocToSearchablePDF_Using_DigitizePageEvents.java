@@ -169,6 +169,7 @@ public class Demo11_ScannedDocToSearchablePDF_Using_DigitizePageEvents
                                     IDigitizedText dText = (IDigitizedText) txt;
                                     float confidenceVal = dText.getConfidenceValue();
                                     System.out.print(", Confidence value: " + confidenceVal);
+                                    System.out.print(", BoundingRect: " + txt.getBoundingRect());
                                 }
                                 
                                 System.out.println();

@@ -18,6 +18,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -40,15 +41,14 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
@@ -1659,66 +1659,60 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
     private void resetRotation()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-                viewer.resetAllPageRotation();
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				viewer.resetAllPageRotation();
                 stopProgressBar();
-            }
-        });
-        t.start();
-            
-    
+			}
+		});
     }
 
     private void doRotatePageClockwise()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-                int[] visiblePageNumbers = viewer.getVisiblePageNumbers();
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				int[] visiblePageNumbers = viewer.getVisiblePageNumbers();
                 for(int i = 0; i < visiblePageNumbers.length; i++)
                 {
                     int n = visiblePageNumbers[i];
                     viewer.rotatePageTo(RotationAngle.Clockwise90, n );
                 }
                 stopProgressBar();
-            }
-        });
-        t.start();
-            
+			}
+		});
     }
 
     private void doRotatePageCounterClockwise()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-                String visiblePageNumbers = Arrays.toString(viewer.getVisiblePageNumbers());
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				String visiblePageNumbers = Arrays.toString(viewer.getVisiblePageNumbers());
                 visiblePageNumbers = visiblePageNumbers.substring(1, visiblePageNumbers.length()-1);
                 viewer.rotatePageTo(RotationAngle.AntiClockwise90, visiblePageNumbers);
                 stopProgressBar();
-            }
-        });
-        t.start();
+			}
+		});
     }
 
     private void setViewerPageLayout(PageLayout pageLayout)
     {
         final PageLayout pageLayoutVal = pageLayout;
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                try
+        SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try
                 {
-                    startProgressBar();
                     viewer.setPageLayout(pageLayoutVal);
                 }
                 catch (XDocException e)
@@ -1729,9 +1723,8 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
                 {
                     stopProgressBar();
                 }
-            }
-        });
-        t.start();
+			}
+		});
     }
 
     private void processChkMnuShowLabelsAction()
@@ -1788,51 +1781,41 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
     private void doRotateClockwise()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-                viewer.rotateAllPagesClockwise();
-                stopProgressBar();
-            }
-        });
-        t.start();
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				viewer.rotateAllPagesClockwise();
+				stopProgressBar();
+			}
+		});
     }
 
     private void doRotateCounterClockwise()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-                viewer.rotateAllPagesAntiClockwise();
-                stopProgressBar();
-            }
-        });
-        t.start();
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				viewer.rotateAllPagesAntiClockwise();
+				stopProgressBar();
+			}
+		});
     }
 
     private void doActualSize()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                try
-                {
-                startProgressBar();
-                viewer.zoomTo(new Zoom(ZoomMode.ActualSize, 0));
-                }catch (Exception e) {
-                }
-                finally
-                {
-                    stopProgressBar();
-                }
-            }
-        });
-        t.start();
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run()
+				{
+					startProgressBar();
+	                viewer.zoomTo(new Zoom(ZoomMode.ActualSize, 0));
+	                stopProgressBar();
+				}
+			});
 
         currentZoomPercentage = viewer.getZoom().getZoomPercentage();
         cboZoomPercentage.setSelectedItem((Double.valueOf(viewer.getZoom().getZoomPercentage()))
@@ -1842,24 +1825,23 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
     private void doFitPage() throws IOException
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                try
-                {
-                startProgressBar();
-                viewer.zoomTo(new Zoom(ZoomMode.FitPage, 0));
-                }catch (Exception e) {
-                    
-                }
-                finally
-                {
-                    stopProgressBar();
-                }
-            }
-        });
-        t.start();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try
+				{
+					viewer.zoomTo(new Zoom(ZoomMode.FitPage, 0));
+				}catch (Exception e) {
+
+				} 
+				finally
+				{
+					stopProgressBar();
+				}
+			}
+		});
 
         currentZoomPercentage = viewer.getZoom().getZoomPercentage();
         cboZoomPercentage.setSelectedItem((Double.valueOf(viewer.getZoom().getZoomPercentage()))
@@ -1868,27 +1850,25 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
     private void doFitWidth() throws IOException
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                try
-                {
-                    startProgressBar();
-                    viewer.zoomTo(new Zoom(ZoomMode.FitWidth, 0.0));
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-
-                }
-                finally
-                {
-                    stopProgressBar();
-                }
-            }
-        });
-        t.start();
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try 
+				{
+					viewer.zoomTo(new Zoom(ZoomMode.FitWidth, 0.0));
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				finally
+				{
+					stopProgressBar();
+				}
+			}
+		});
 
         currentZoomPercentage = viewer.getZoom().getZoomPercentage();
         cboZoomPercentage.setSelectedItem((Double.valueOf(viewer.getZoom().getZoomPercentage()))
@@ -1909,13 +1889,12 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
     private void viewFirstPage()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-
-                try
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try
                 {
                     viewer.firstPage();
                 }
@@ -1923,101 +1902,106 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
                 {
                     e.printStackTrace();
                 }
-                stopProgressBar();
-            }
-        });
-        t.start();
+				finally
+				{
+					stopProgressBar();
+				}
+			}
+		});
     }
 
     private void viewPreviousPage()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-
-                try
+    	SwingUtilities.invokeLater(new Runnable()
+    	{
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try
                 {
-                    viewer.previousPage();
+					viewer.previousPage();
                 }
                 catch (XDocException e)
                 {
                     e.printStackTrace();
                 }
-                stopProgressBar();
-            }
-        });
-        t.start();
+				finally
+				{
+					stopProgressBar();
+				}
+			}
+		});
     }
 
     private void goToPageNum(int pNum)
     {
         final int gotoPageNum = pNum;
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-
-                try
+        SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try
                 {
-                    viewer.goToPageNumber(gotoPageNum);
+					viewer.goToPageNumber(gotoPageNum);
                 }
                 catch (XDocException e)
                 {
                     e.printStackTrace();
                 }
-                
-                stopProgressBar();
-            }
-        });
-        t.start();
-
+				finally
+				{
+					stopProgressBar();
+				}
+			}
+		});
     }
 
     private void viewNextPage()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-
-                try
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try
                 {
-                    viewer.nextPage();
+					viewer.nextPage();
                 }
                 catch (XDocException e)
                 {
                     e.printStackTrace();
                 }
-                
-                stopProgressBar();
-            }
-        });
-        t.start();
+				finally
+				{
+					stopProgressBar();
+				}
+			}
+		});
     }
 
     private void viewLastPage()
     {
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-                try
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				startProgressBar();
+				try
                 {
-                    viewer.lastPage();
+					viewer.lastPage();
                 }
                 catch (XDocException e)
                 {
                     e.printStackTrace();
                 }
-                stopProgressBar();
-            }
-        });
-        t.start();
+				finally
+				{
+					stopProgressBar();
+				}
+			}
+		});
     }
 
     public void itemStateChanged(ItemEvent ie)
@@ -2168,16 +2152,16 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
     private void setRequiredZoom(double zoomFactor)
     {
         final double requiredZoomFactor = zoomFactor;
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                startProgressBar();
-                viewer.zoomTo(new Zoom(ZoomMode.CustomZoomPercent, requiredZoomFactor));
-                stopProgressBar();
-            }
-        });
-        t.start();
+        
+        SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				startProgressBar();
+				viewer.zoomTo(new Zoom(ZoomMode.CustomZoomPercent,
+						requiredZoomFactor));
+				stopProgressBar();
+			}
+		});
     }
 
     private void updatePageNumAndZoomVal(int pageNum)
@@ -2268,14 +2252,12 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
         // Show the Progress
         startProgressBar();
 
-        Thread t = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                loadDocument(docPath);
-            }
-        });
-        t.start();
+        SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				loadDocument(docPath);
+			}
+		});
     }
 
     private void printFile() throws IOException
@@ -2403,6 +2385,14 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
             setTitle(fileToBeLoaded.getName() + " - Gnostice XtremeDocumentStudio");
         }
+        catch (IncorrectPasswordException pwdEx)
+        {
+            // In the demo we don't throw the exception as the
+            // password will be asked repeatedly until the correct
+            // password is provided or user can cancel the loading.
+//            JOptionPane.showMessageDialog(this, pwdEx.getMessage(),
+//                "Gnostice XDoc Viewer", JOptionPane.ERROR_MESSAGE);
+        }
         catch (XDocException xDocEx)
         {
             JOptionPane.showMessageDialog(this, xDocEx.getMessage(),
@@ -2513,7 +2503,7 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
         radioMnuLayoutAutoFitColumnsInWindow.setEnabled(false);
         radioMnuLayoutUserDefined.setEnabled(false);
 
-        setTitle("Gnostice XStremeDocumentStudio");
+        setTitle("Gnostice XtremeDocumentStudio");
 
         if (viewer.isDocumentLoaded())
         {
@@ -2559,7 +2549,7 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
 
         vd.setSize(screenWidth, screenHeight);
         vd.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        vd.setTitle("Gnostice XStremeDocumentStudio");
+        vd.setTitle("Gnostice XtremeDocumentStudio");
         vd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         vd.setVisible(true);
 
@@ -2937,29 +2927,67 @@ ActionListener, ItemListener, WindowListener, DocumentViewerListener, DocumentPr
     public void needPassword(
         ViewerNeedPasswordEvent needPasswordEvent)
     {
-        JPanel panel = new JPanel(new FlowLayout());
+        // old working one but not usable.
+//        JPanel panel = new JPanel(new FlowLayout());
+//
+//        JPasswordField field = new JPasswordField(10);
+//        panel.add(new JLabel("Password: "));
+//        panel.add(field);
+//
+//        field.requestFocus();
+//
+//        JOptionPane.showMessageDialog(this, panel,
+//            "Gnostice Document Viewer", JOptionPane.OK_OPTION
+//            | JOptionPane.QUESTION_MESSAGE);
+//
+//        char[] pin = field.getPassword();
+//        try
+//        {
+//            pwd = new String(pin);
+//        }
+//        finally
+//        {
+//            Arrays.fill(pin, ' ');
+//            field.setText("");
+//        }
+//        needPasswordEvent.setPassword(pwd);
+        
+        // prompts the dialog box repeatedly until the correct
+        // password is provided or user can cancel the loading.
+        final PasswordPanel passwordPanel = new PasswordPanel();
+        JOptionPane optionPane = new JOptionPane(passwordPanel, JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.WARNING_MESSAGE);
 
-        JPasswordField field = new JPasswordField(10);
-        panel.add(new JLabel("Password: "));
-        panel.add(field);
+        JDialog dialog = optionPane.createDialog(this, "Password");
 
-        field.requestFocus();
-
-        JOptionPane.showMessageDialog(this, panel,
-            "Gnostice Document Viewer", JOptionPane.OK_OPTION
-            | JOptionPane.QUESTION_MESSAGE);
-
-        char[] pin = field.getPassword();
-        try
+        // Wire up FocusListener to ensure JPasswordField is able to
+        // request focus when the dialog is first shown.
+        dialog.addWindowFocusListener(new WindowAdapter()
         {
-            pwd = new String(pin);
-        }
-        finally
+            @Override
+            public void windowGainedFocus(WindowEvent e)
+            {
+                passwordPanel.gainedFocus();
+                passwordPanel.passwordField.requestFocus();
+                passwordPanel.passwordField.requestFocusInWindow();
+            }
+        });
+        
+        dialog.setVisible(true);
+
+        if (optionPane.getValue() != null
+            && optionPane.getValue().equals(JOptionPane.OK_OPTION))
         {
-            Arrays.fill(pin, ' ');
-            field.setText("");
+            String password = new String(passwordPanel.getPassword());
+//            System.err.println("You entered: " + password);
+            pwd = password;
+            needPasswordEvent.setPassword(pwd);
+            needPasswordEvent.setCallAgainIfUnsuccessful(true);
         }
-        needPasswordEvent.setPassword(pwd);
+        else
+        {
+            needPasswordEvent.setCallAgainIfUnsuccessful(false);
+        }
     }
 
     @Override
